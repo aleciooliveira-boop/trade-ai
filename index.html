@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trade AI | Global Trade Assistant</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0b1220;color:#f8fafc;font-family:Arial,sans-serif}
+header{padding:22px 7%;border-bottom:1px solid #263247;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:25px;font-weight:800;color:#55d6a5}
+.logo span{color:white}
+header small{color:#94a3b8}
+main{max-width:1050px;margin:65px auto;padding:0 22px}
+h1{font-size:42px;margin-bottom:12px}
+p{color:#aab7ca;line-height:1.6}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:35px 0}
+.card{background:#131e30;border:1px solid #29384e;border-radius:13px;padding:22px}
+.card h3{margin-top:0}
+.card p{font-size:14px}
+button{background:#38c995;color:#071a17;border:0;padding:12px 18px;border-radius:8px;font-weight:bold;cursor:pointer}
+button:hover{opacity:.85}
+.workspace{background:#131e30;border:1px solid #29384e;border-radius:14px;padding:25px;margin-top:25px}
+textarea{width:100%;min-height:130px;background:#0b1220;color:white;border:1px solid #39485d;border-radius:9px;padding:15px;margin:15px 0;font:inherit}
+#output{white-space:pre-wrap;line-height:1.6;color:#d5e5f5;margin-top:20px}
+footer{text-align:center;padding:35px;color:#718096}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">TRADE <span>AI.</span></div>
+<small>GLOBAL TRADE INTELLIGENCE</small>
+</header>
+<main>
+<p>YOUR INTERNATIONAL TRADE ASSISTANT</p>
+<h1>Global Trade.<br><span style="color:#55d6a5">Smarter with AI.</span></h1>
+<p>Tools designed to simplify international trade operations, documents and business communication.</p>
+
+<div class="grid">
+<div class="card">
+<h3>📄 Document Analyzer</h3>
+<p>Review commercial invoices and packing lists.</p>
+<button onclick="selectTool('Document Analyzer')">Open tool</button>
+</div>
+<div class="card">
+<h3>🌎 Trade Translator</h3>
+<p>Translate international business communications.</p>
+<button onclick="selectTool('Trade Translator')">Open tool</button>
+</div>
+<div class="card">
+<h3>✉️ Email Assistant</h3>
+<p>Create professional international business emails.</p>
+<button onclick="selectTool('Email Assistant')">Open tool</button>
+</div>
+<div class="card">
+<h3>📋 Trade Checklist</h3>
+<p>Organize import and export operations.</p>
+<button onclick="selectTool('Trade Checklist')">Open tool</button>
+</div>
+</div>
+
+<section class="workspace">
+<h2 id="toolTitle">Your Trade AI Workspace</h2>
+<p id="instruction">Choose a tool above to get started.</p>
+<textarea id="input" placeholder="Enter your text or trade information here..."></textarea>
+<button onclick="runTool()">Generate</button>
+<div id="output"></div>
+</section>
+</main>
+<footer>TRADE AI © 2026 | Your Global Trade Assistant</footer>
+
+<script>
+let currentTool="";
+function selectTool(tool){
+currentTool=tool;
+document.getElementById("toolTitle").textContent=tool;
+document.getElementById("instruction").textContent=
+"Enter your information below to use this tool.";
+document.getElementById("output").textContent="";
+document.getElementById("input").placeholder=
+"Enter information for "+tool+"...";
+document.querySelector(".workspace").scrollIntoView({behavior:"smooth"});
+}
+function runTool(){
+const value=document.getElementById("input").value.trim();
+if(!value){alert("Please enter some information first.");return;}
+let result="";
+if(currentTool==="Trade Translator"){
+result="Translation workspace ready.\n\nYour text:\n"+value+"\n\nAI translation integration coming soon.";
+}else if(currentTool==="Email Assistant"){
+result="BUSINESS EMAIL DRAFT\n\nSubject: International Trade Inquiry\n\nDear Business Partner,\n\n"+value+"\n\nBest regards,\nYour Trade Team";
+}else if(currentTool==="Trade Checklist"){
+result="TRADE OPERATION CHECKLIST\n\n☐ Commercial Invoice\n☐ Packing List\n☐ Transport Document\n☐ Product Description\n☐ Origin Information\n☐ Customs Requirements\n\nNotes:\n"+value;
+}else if(currentTool==="Document Analyzer"){
+result="DOCUMENT REVIEW\n\nInformation submitted:\n"+value+"\n\nPlease verify all document details with a qualified trade professional.";
+}else{
+result="Please select a tool first.";
+}
+document.getElementById("output").textContent=result;
+}
+</script>
+</body>
+</html>
