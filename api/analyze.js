@@ -55,57 +55,38 @@ export default async function handler(req, res) {
       prompt = `Create a practical, grouped import/export checklist. Mark items dependent on country, product or transport mode for verification. Do not present it as legal advice:\n\n${text}`;
 
     } else {
-      return res.status(400).json({ error: "Unknown tool." });
+      return res.status(400).json({
+        error: "Unknown tool."
+      });
     }
 
-    const parts = [{ text: prompt }];
+    const input = [
+      { type: "text", text: prompt }
+    ];
 
     if (tool === "Document Analyzer") {
-      parts.push({
-        inline_data: {
-          mime_type: mimeType,
-          data: fileBase64
-        }
+      input.push({
+        type: mimeType === "application/pdf" ? "document" : "image",
+        mime_type: mimeType,
+        data: fileBase64
       });
     }
 
-    let upstream;
-
-    try {
-      upstream = await fetch(
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=" +
-          encodeURIComponent(apiKey),
-        {
-          method: "POST",
-          signal: AbortSignal.timeout(55000),
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            contents: [{ parts }],
-            generationConfig: {
-              temperature: 0.2,
-              maxOutputTokens: 1800
-            }
-          })
-        }
-      );
-    } catch (error) {
-      console.error("Gemini connection error:", error);
-
-      if (
-        error.name === "TimeoutError" ||
-        error.name === "AbortError"
-      ) {
-        return res.status(504).json({
-          error: "The AI provider took too long to respond. Please try again."
-        });
+    const upstream = await fetch(
+      "https://generativelanguage.googleapis.com/v1beta/interactions",
+      {
+        method: "POST",
+        signal: AbortSignal.timeout(55000),
+        headers: {
+          "Content-Type": "application/json",
+          "x-goog-api-key": apiKey
+        },
+        body: JSON.stringify({
+          model: "gemini-3.8-flash",
+          input
+        })
       }
-
-      return res.status(502).json({
-        error: "Could not connect to the AI provider."
-      });
-    }
+    );
 
     const responseText = await upstream.text();
     let result;
@@ -126,8 +107,11 @@ export default async function handler(req, res) {
       });
     }
 
-    const answer = result?.candidates?.[0]?.content?.parts
-      ?.map(part => part.text || "")
+    const answer = (result.steps || [])
+      .filter(step => step.type === "model_output")
+      .flatMap(step => step.content || [])
+      .filter(item => item.type === "text")
+      .map(item => item.text || "")
       .join("\n")
       .trim();
 
@@ -138,10 +122,22 @@ export default async function handler(req, res) {
       });
     }
 
-    return res.status(200).json({ result: answer });
+    return res.status(200).json({
+      result: answer
+    });
 
   } catch (error) {
     console.error("Trade AI server error:", error);
+
+    if (
+      error.name === "TimeoutError" ||
+      error.name === "AbortError"
+    ) {
+      return res.status(504).json({
+        error: "The AI provider took too long to respond. Please try again."
+      });
+    }
+
     return res.status(500).json({
       error: "Server error while processing your request."
     });
