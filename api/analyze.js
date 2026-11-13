@@ -57,6 +57,7 @@ export default async function handler(req, res) {
         "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=" + encodeURIComponent(apiKey),
         {
           method: "POST",
+          signal: AbortSignal.timeout(25000),
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             contents: [{ parts }],
