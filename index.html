@@ -1,103 +1,134 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1220">
 <title>Trade AI | Global Trade Assistant</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#0b1220;color:#f8fafc;font-family:Arial,sans-serif}
-header{padding:22px 7%;border-bottom:1px solid #263247;display:flex;justify-content:space-between;align-items:center}
-.logo{font-size:25px;font-weight:800;color:#55d6a5}
-.logo span{color:white}
-header small{color:#94a3b8}
-main{max-width:1050px;margin:65px auto;padding:0 22px}
-h1{font-size:42px;margin-bottom:12px}
-p{color:#aab7ca;line-height:1.6}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:35px 0}
-.card{background:#131e30;border:1px solid #29384e;border-radius:13px;padding:22px}
-.card h3{margin-top:0}
-.card p{font-size:14px}
-button{background:#38c995;color:#071a17;border:0;padding:12px 18px;border-radius:8px;font-weight:bold;cursor:pointer}
-button:hover{opacity:.85}
-.workspace{background:#131e30;border:1px solid #29384e;border-radius:14px;padding:25px;margin-top:25px}
-textarea{width:100%;min-height:130px;background:#0b1220;color:white;border:1px solid #39485d;border-radius:9px;padding:15px;margin:15px 0;font:inherit}
-#output{white-space:pre-wrap;line-height:1.6;color:#d5e5f5;margin-top:20px}
-footer{text-align:center;padding:35px;color:#718096}
+:root{--bg:#0b1220;--panel:#131e30;--border:#29384e;--text:#f8fafc;--muted:#aab7ca;--green:#38c995}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
+header{padding:20px 7%;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:12px}
+.logo{font-size:25px;font-weight:800;color:#55d6a5}.logo span{color:white}header small{color:#94a3b8;font-size:10px;letter-spacing:1px}
+main{max-width:1050px;margin:55px auto;padding:0 22px}.eyebrow{color:#94a3b8;font-size:12px;letter-spacing:1px}
+h1{font-size:clamp(32px,5vw,43px);margin:12px 0}h1 span{color:#55d6a5}
+p{color:var(--muted);line-height:1.6}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:16px;margin:35px 0}
+.card,.workspace{background:var(--panel);border:1px solid var(--border);border-radius:13px;padding:22px}
+.card{min-height:175px;display:flex;flex-direction:column;align-items:flex-start}.card h3{margin:5px 0}.card p{font-size:14px;flex:1}
+button{background:var(--green);color:#071a17;border:0;padding:12px 18px;border-radius:8px;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.5;cursor:wait}.secondary{background:transparent;border:1px solid #52627a;color:white}
+.workspace{padding:25px;margin-top:25px;scroll-margin-top:20px}.workspace h2{margin-top:0}
+label{display:block;margin:16px 0 8px;font-size:14px;font-weight:bold}
+textarea,input[type=file]{width:100%;background:#0b1220;color:white;border:1px solid #39485d;border-radius:9px;padding:14px;font:inherit}
+textarea{min-height:135px;resize:vertical;line-height:1.5}.hint{font-size:12px;color:#94a3b8}
+.actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:17px}
+#status{font-size:13px;color:#aab7ca}#status.error{color:#ff8585}#status.success{color:#55d6a5}
+#output{display:none;background:#0b1220;border:1px solid var(--border);border-radius:9px;padding:18px;margin-top:20px}
+#output h3{color:#55d6a5;margin-top:0}#outputText{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.65;color:#e5edf8}
+footer{text-align:center;padding:35px;color:#718096;font-size:12px}
+@media(max-width:600px){header{padding:17px 20px}header small{display:none}main{margin:35px auto}.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<header>
-<div class="logo">TRADE <span>AI.</span></div>
-<small>GLOBAL TRADE INTELLIGENCE</small>
-</header>
+<header><div class="logo">TRADE <span>AI.</span></div><small>GLOBAL TRADE INTELLIGENCE</small></header>
 <main>
-<p>YOUR INTERNATIONAL TRADE ASSISTANT</p>
-<h1>Global Trade.<br><span style="color:#55d6a5">Smarter with AI.</span></h1>
+<div class="eyebrow">YOUR INTERNATIONAL TRADE ASSISTANT</div>
+<h1>Global Trade.<br><span>Smarter with AI.</span></h1>
 <p>Tools designed to simplify international trade operations, documents and business communication.</p>
-
-<div class="grid">
-<div class="card">
-<h3>📄 Document Analyzer</h3>
-<p>Review commercial invoices and packing lists.</p>
-<button onclick="selectTool('Document Analyzer')">Open tool</button>
-</div>
-<div class="card">
-<h3>🌎 Trade Translator</h3>
-<p>Translate international business communications.</p>
-<button onclick="selectTool('Trade Translator')">Open tool</button>
-</div>
-<div class="card">
-<h3>✉️ Email Assistant</h3>
-<p>Create professional international business emails.</p>
-<button onclick="selectTool('Email Assistant')">Open tool</button>
-</div>
-<div class="card">
-<h3>📋 Trade Checklist</h3>
-<p>Organize import and export operations.</p>
-<button onclick="selectTool('Trade Checklist')">Open tool</button>
-</div>
-</div>
-
-<section class="workspace">
+<section class="grid">
+<div class="card"><div>📄</div><h3>Document Analyzer</h3><p>Review commercial invoices and packing lists.</p><button onclick="selectTool('Document Analyzer')">Open tool</button></div>
+<div class="card"><div>🌎</div><h3>Trade Translator</h3><p>Translate international business communications.</p><button onclick="selectTool('Trade Translator')">Open tool</button></div>
+<div class="card"><div>✉️</div><h3>Email Assistant</h3><p>Create professional international business emails.</p><button onclick="selectTool('Email Assistant')">Open tool</button></div>
+<div class="card"><div>📋</div><h3>Trade Checklist</h3><p>Organize import and export operations.</p><button onclick="selectTool('Trade Checklist')">Open tool</button></div>
+</section>
+<section class="workspace" id="workspace">
 <h2 id="toolTitle">Your Trade AI Workspace</h2>
 <p id="instruction">Choose a tool above to get started.</p>
-<textarea id="input" placeholder="Enter your text or trade information here..."></textarea>
-<button onclick="runTool()">Generate</button>
-<div id="output"></div>
+<div id="fileArea" hidden>
+<label for="documentFile">Upload your commercial document (PDF, JPG or PNG)</label>
+<input type="file" id="documentFile" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png">
+<p class="hint">Maximum size: 4 MB.</p>
+<label for="notes">Additional instructions (optional)</label>
+<textarea id="notes" placeholder="What would you like the AI to check?"></textarea>
+</div>
+<div id="textArea">
+<label id="textLabel" for="userText">Enter your information</label>
+<textarea id="userText" placeholder="Enter your text here..."></textarea>
+</div>
+<div class="actions"><button id="runButton" onclick="runTool()">Generate</button><button class="secondary" onclick="clearWorkspace()">Clear</button><span id="status" role="status" aria-live="polite"></span></div>
+<div id="output"><h3>Trade AI result</h3><div id="outputText"></div><div class="actions"><button class="secondary" onclick="copyResult()">Copy result</button></div></div>
 </section>
 </main>
-<footer>TRADE AI © 2026 | Your Global Trade Assistant</footer>
-
+<footer>TRADE AI © 2026 | GLOBAL TRADE ASSISTANT</footer>
 <script>
 let currentTool="";
+const descriptions={
+"Document Analyzer":"Upload a commercial document to extract visible information and identify possible inconsistencies.",
+"Trade Translator":"Enter your message to translate it into clear, professional international business English.",
+"Email Assistant":"Describe the situation and the email you need. The assistant will prepare a professional draft.",
+"Trade Checklist":"Describe your import or export operation to generate a practical checklist."
+};
+const placeholders={
+"Trade Translator":"Example: Prezados, solicitamos o envio da fatura comercial e do packing list para darmos continuidade ao processo de importação.",
+"Email Assistant":"Example: Write an email to the supplier requesting the commercial invoice and packing list.",
+"Trade Checklist":"Example: Create a checklist for importing machinery from China into Brazil."
+};
 function selectTool(tool){
-currentTool=tool;
-document.getElementById("toolTitle").textContent=tool;
-document.getElementById("instruction").textContent=
-"Enter your information below to use this tool.";
-document.getElementById("output").textContent="";
-document.getElementById("input").placeholder=
-"Enter information for "+tool+"...";
-document.querySelector(".workspace").scrollIntoView({behavior:"smooth"});
+ currentTool=tool;
+ document.getElementById("toolTitle").textContent=tool;
+ document.getElementById("instruction").textContent=descriptions[tool];
+ document.getElementById("fileArea").hidden=tool!=="Document Analyzer";
+ document.getElementById("textArea").hidden=tool==="Document Analyzer";
+ document.getElementById("textLabel").textContent=tool==="Trade Translator"?"Text to translate":tool==="Email Assistant"?"Describe the email you need":"Describe your operation";
+ document.getElementById("userText").placeholder=placeholders[tool]||"";
+ document.getElementById("status").textContent="";
+ document.getElementById("status").className="";
+ document.getElementById("output").style.display="none";
+ document.getElementById("workspace").scrollIntoView({behavior:"smooth"});
 }
-function runTool(){
-const value=document.getElementById("input").value.trim();
-if(!value){alert("Please enter some information first.");return;}
-let result="";
-if(currentTool==="Trade Translator"){
-result="Translation workspace ready.\n\nYour text:\n"+value+"\n\nAI translation integration coming soon.";
-}else if(currentTool==="Email Assistant"){
-result="BUSINESS EMAIL DRAFT\n\nSubject: International Trade Inquiry\n\nDear Business Partner,\n\n"+value+"\n\nBest regards,\nYour Trade Team";
-}else if(currentTool==="Trade Checklist"){
-result="TRADE OPERATION CHECKLIST\n\n☐ Commercial Invoice\n☐ Packing List\n☐ Transport Document\n☐ Product Description\n☐ Origin Information\n☐ Customs Requirements\n\nNotes:\n"+value;
-}else if(currentTool==="Document Analyzer"){
-result="DOCUMENT REVIEW\n\nInformation submitted:\n"+value+"\n\nPlease verify all document details with a qualified trade professional.";
-}else{
-result="Please select a tool first.";
+function clearWorkspace(){
+ document.getElementById("userText").value="";
+ document.getElementById("notes").value="";
+ document.getElementById("documentFile").value="";
+ document.getElementById("output").style.display="none";
+ document.getElementById("status").textContent="";
 }
-document.getElementById("output").textContent=result;
+function fileToBase64(file){return new Promise((resolve,reject)=>{
+ const reader=new FileReader();reader.onload=()=>resolve(String(reader.result).split(",")[1]);
+ reader.onerror=()=>reject(new Error("Could not read the selected file."));reader.readAsDataURL(file);
+});}
+async function runTool(){
+ const status=document.getElementById("status"),button=document.getElementById("runButton");
+ const payload={tool:currentTool};
+ if(!currentTool){status.textContent="Choose a tool first.";status.className="error";return;}
+ if(currentTool==="Document Analyzer"){
+  const file=document.getElementById("documentFile").files[0];
+  if(!file){status.textContent="Please select a document.";status.className="error";return;}
+  if(!["application/pdf","image/jpeg","image/png"].includes(file.type)){status.textContent="Only PDF, JPG and PNG files are supported.";status.className="error";return;}
+  if(file.size>4*1024*1024){status.textContent="File too large. Maximum size is 4 MB.";status.className="error";return;}
+  try{payload.text=document.getElementById("notes").value;payload.fileName=file.name;payload.mimeType=file.type;payload.fileBase64=await fileToBase64(file);}
+  catch(e){status.textContent=e.message;status.className="error";return;}
+ }else{
+  payload.text=document.getElementById("userText").value.trim();
+  if(!payload.text){status.textContent="Please enter some text first.";status.className="error";return;}
+ }
+ button.disabled=true;button.textContent="Processing...";status.textContent="Connecting to Trade AI...";status.className="";
+ document.getElementById("output").style.display="none";
+ try{
+  const response=await fetch("/api/analyze",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+  const raw=await response.text();let data;
+  try{data=JSON.parse(raw);}catch(e){throw new Error("Invalid server response. Check the Vercel API deployment.");}
+  if(!response.ok)throw new Error(data.error||data.message||"The request failed.");
+  const result=data.result||data.output||data.text||data.response||JSON.stringify(data,null,2);
+  document.getElementById("outputText").textContent=result;
+  document.getElementById("output").style.display="block";
+  status.textContent="Completed successfully.";status.className="success";
+ }catch(error){status.textContent=error.message||"Something went wrong.";status.className="error";}
+ finally{button.disabled=false;button.textContent="Generate";}
+}
+async function copyResult(){
+ try{await navigator.clipboard.writeText(document.getElementById("outputText").textContent);document.getElementById("status").textContent="Result copied.";document.getElementById("status").className="success";}
+ catch(e){document.getElementById("status").textContent="Select the result and copy it manually.";}
 }
 </script>
 </body>
