@@ -35,7 +35,7 @@ Do not invent missing values. Distinguish observed facts from possible issues. D
     }
 
     const upstream = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + encodeURIComponent(apiKey),
+      "https://generativelanguage.googleapis.com/v1beta/models/:generateContent?key=" + encodeURIComponent(apiKey),
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
