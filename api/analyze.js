@@ -48,22 +48,39 @@ export default async function handler(req, res) {
       });
     }
 
-    const upstream = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=" + encodeURIComponent(apiKey),
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [{ parts }],
-          generationConfig: {
-            temperature: 0.2,
-            maxOutputTokens: 1800
-          }
-        })
-      }
-    );
+    
+    let upstream;
+    let result;
 
-    const result = await upstream.json();
+    for (let attempt = 0; attempt < 3; attempt++) {
+      upstream = await fetch(
+        "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=" + encodeURIComponent(apiKey),
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ parts }],
+            generationConfig: {
+              temperature: 0.2,
+              maxOutputTokens: 1800
+            }
+          })
+        }
+      );
+
+      if (upstream.ok) {
+        result = await upstream.json();
+        break;
+      }
+
+      result = await upstream.json();
+
+      if (![429, 500, 502, 503, 504].includes(upstream.status) || attempt === 2) {
+        break;
+      }
+
+      await new Promise(resolve => setTimeout(resolve, 1500 * (attempt + 1)));
+    }
 
     if (!upstream.ok) {
       return res.status(502).json({
